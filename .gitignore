@@ -1,0 +1,14 @@
+*.cmi
+*.cmx
+*.o
+.gitignore
+cat
+cmp
+date
+echo
+env
+id
+ncat
+printenv
+pwd
+tee
