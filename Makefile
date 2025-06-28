@@ -1,4 +1,4 @@
-ALL=cat cmp date echo env id ncat printenv pwd tee
+ALL=cat cmp date echo expr env id ncat printenv pwd tee
 
 
 all: ${ALL}
@@ -22,6 +22,10 @@ date: date.ml
 
 echo: echo.ml
 	ocamlopt echo.ml -o echo
+
+
+expr: expr.ml
+	ocamlopt -I +str str.cmxa expr.ml -o expr
 
 
 env: env.ml
