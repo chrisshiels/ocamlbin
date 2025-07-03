@@ -13,3 +13,4 @@ ncat
 printenv
 pwd
 tee
+uname
