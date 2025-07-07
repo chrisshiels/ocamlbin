@@ -200,7 +200,7 @@ let do_ncat_listen (options : options)
   if options.verbose
   then fprintf_return ()
                       stderr
-                      "Ncat: Listening on %s:%d\n"
+                      "ncat: Listening on %s:%d\n"
                       (Unix.string_of_inet_addr inet_addr)
                       port ;
   server_connections options fd

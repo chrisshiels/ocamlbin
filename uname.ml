@@ -150,10 +150,10 @@ let main (argv : string array) : int =
                hardware_platform = !hardware_platform;
                operating_system = !operating_system
              }
-  with Arg.Bad message   -> prerr_string message ;
-                            1
-     | Arg.Help message  -> print_string message ;
-                            0
+  with Arg.Bad message  -> prerr_string message ;
+                           1
+     | Arg.Help message -> print_string message ;
+                           0
 
 
 let () =
