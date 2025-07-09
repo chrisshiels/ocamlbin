@@ -13,5 +13,6 @@ ncat
 printenv
 pwd
 tee
+tty
 uname
 uptime
