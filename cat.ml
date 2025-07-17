@@ -189,7 +189,7 @@ let do_cat (show_all : bool)
 
 
 let main (argv : string array) : int =
-  let usage = "Usage: cat [OPTION]... [FILE]...\n"  ^
+  let usage = "Usage: cat [OPTION]... [FILE]...\n" ^
               "Concatenate FILE(s) to standard output.\n" in
   let show_all = ref false in
   let show_ends = ref false in

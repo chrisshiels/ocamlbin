@@ -92,7 +92,7 @@ let do_uname (options : options) : int =
 
 
 let main (argv : string array) : int =
-  let usage = "Usage: uname [OPTION]...\n"  ^
+  let usage = "Usage: uname [OPTION]...\n" ^
               "Print certain system information.\n" in
   let all = ref false in
   let kernel_name = ref false in

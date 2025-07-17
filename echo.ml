@@ -51,7 +51,7 @@ let rec expand_escapes (l : char list) : char list =
                            Char.chr n :: expand_escapes t
      | '\\' :: 'x' :: t -> let (n, t) = parse_hexadecimal 2 0 t in
                            Char.chr n :: expand_escapes t
-     | h :: t           -> h      :: expand_escapes t
+     | h :: t           -> h :: expand_escapes t
 
 
 let escapes (opt_e : bool)
