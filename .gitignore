@@ -5,6 +5,7 @@
 cat
 cmp
 date
+dmesg
 echo
 expr
 env

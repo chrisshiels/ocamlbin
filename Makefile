@@ -1,4 +1,4 @@
-ALL=cat cmp date echo expr env id ncat printenv pwd tee tty uname uptime
+ALL=cat cmp date dmesg echo expr env id ncat printenv pwd tee tty uname uptime
 
 
 all: ${ALL}
@@ -14,6 +14,10 @@ cat: cat.ml
 
 cmp: cmp.ml
 	ocamlopt cmp.ml -o cmp
+
+
+dmesg: dmesg.ml
+	ocamlopt -I +unix unix.cmxa dmesg.ml -o dmesg
 
 
 date: date.ml
