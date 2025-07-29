@@ -241,7 +241,7 @@ let main (argv : string array) : int =
        "Display kernel messages");
       ("--userspace",
        Arg.Set userspace,
-       "Display userspace messages");
+       "Display userspace messages")
     ] in
   try
     Arg.parse_argv argv speclist anon usage ;

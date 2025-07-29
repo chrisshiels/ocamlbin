@@ -212,7 +212,7 @@ let main (argv : string array) : int =
        "Compare at most LIMIT bytes");
       ("--silent",
        Arg.Set silent,
-       "Suppress all normal output");
+       "Suppress all normal output")
     ] in
   try
     Arg.parse_argv argv speclist anon usage ;

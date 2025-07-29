@@ -7,8 +7,8 @@ cmp
 date
 dmesg
 echo
-expr
 env
+expr
 id
 ncat
 printenv

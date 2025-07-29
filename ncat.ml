@@ -284,7 +284,7 @@ let main (argv : string array) : int =
        "Accept multiple connections in listen mode");
       ("--verbose",
        Arg.Set verbose,
-       "Verbose");
+       "Verbose")
     ] in
   try
     Arg.parse_argv argv speclist anon usage ;

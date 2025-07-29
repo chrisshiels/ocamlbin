@@ -135,7 +135,7 @@ let main (argv : string array) : int =
        "Print the hardware platform");
       ("--operating-system",
        Arg.Set operating_system,
-       "Print the operating system");
+       "Print the operating system")
     ] in
   try
     Arg.parse_argv argv speclist anon usage ;
