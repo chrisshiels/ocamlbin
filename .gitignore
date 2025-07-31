@@ -9,6 +9,7 @@ dmesg
 echo
 env
 expr
+free
 id
 ncat
 printenv

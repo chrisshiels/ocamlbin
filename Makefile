@@ -1,4 +1,6 @@
-ALL=cat cmp date dmesg echo env expr id ncat printenv pwd tee tty uname uptime
+ALL=\
+	cat cmp date dmesg echo env expr free id ncat printenv pwd tee tty \
+	uname uptime
 
 
 all: ${ALL}
@@ -34,6 +36,10 @@ env: env.ml
 
 expr: expr.ml
 	ocamlopt -I +str str.cmxa expr.ml -o expr
+
+
+free: free.ml
+	ocamlopt -I +unix unix.cmxa free.ml -o free
 
 
 id: id.ml
