@@ -1,3 +1,9 @@
+type options = {
+  pretty : bool;
+  since : bool
+}
+
+
 let current_time () : string =
   let tm = Unix.time () |> Unix.localtime in
   Printf.sprintf "%02d:%02d:%02d" tm.tm_hour tm.tm_min tm.tm_sec
@@ -65,7 +71,7 @@ let seconds_to_days_hours_minutes
   (days, hours, minutes)
 
 
-let do_uptime_pretty (seconds : float) : int =
+let do_uptime_pretty (seconds : float) : int option =
   let (weeks, days, hours, minutes) =
     seconds_to_weeks_days_hours_minutes seconds in
   let units = List.fold_right (fun e a -> let (u, s) = e in
@@ -85,10 +91,10 @@ let do_uptime_pretty (seconds : float) : int =
   if units = []
   then print_endline "up 0 minutes"
   else Printf.printf "up %s\n" (String.concat ", " units) ;
-  0
+  Some 0
 
 
-let do_uptime_since (seconds : float) : int =
+let do_uptime_since (seconds : float) : int option =
   let tm = (Unix.gettimeofday () -. seconds) |> Unix.localtime in
   Printf.printf "%04d-%02d-%02d %02d:%02d:%02d\n"
                 (tm.tm_year + 1900)
@@ -97,10 +103,10 @@ let do_uptime_since (seconds : float) : int =
                 tm.tm_hour
                 tm.tm_min
                 tm.tm_sec ;
-  0
+  Some 0
 
 
-let do_uptime (seconds : float) : int =
+let do_uptime_default (seconds : float) : int option =
   let current_time = current_time () in
   let (days, hours, minutes) = seconds_to_days_hours_minutes seconds in
   let uptime = if days > 0
@@ -120,7 +126,21 @@ let do_uptime (seconds : float) : int =
                 uptime
                 users
                 load_averages ;
-  0
+  Some 0
+
+
+let do_uptime (options : options) : int =
+  let ( >>= ) o f = Option.bind o f in
+  match system_running_seconds ()
+        >>= if options.pretty then
+              do_uptime_pretty
+            else if options.since then
+              do_uptime_since
+            else
+              do_uptime_default
+  with None         -> prerr_endline "uptime: /proc must be mounted" ;
+                       1
+     | Some seconds -> 0
 
 
 let main (argv : string array) : int =
@@ -141,15 +161,10 @@ let main (argv : string array) : int =
     ] in
   try
     Arg.parse_argv argv speclist anon usage ;
-    match system_running_seconds ()
-    with None           -> prerr_endline "uptime: /proc must be mounted" ;
-                           1
-       | Some (seconds) -> if !pretty then
-                             do_uptime_pretty seconds
-                           else if !since then
-                             do_uptime_since seconds
-                           else
-                             do_uptime seconds
+    do_uptime {
+      pretty = !pretty;
+      since = !since
+    }
   with Arg.Bad message  -> prerr_string message ;
                            1
      | Arg.Help message -> print_string message ;
