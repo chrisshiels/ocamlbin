@@ -12,55 +12,55 @@ type options = {
 
 
 (* e.g. "Linux". *)
-let kernel_name () : string =
+let kernel_name () : string option =
   try
-    In_channel.with_open_bin "/proc/sys/kernel/ostype" input_line
+    Some (In_channel.with_open_bin "/proc/sys/kernel/ostype" input_line)
   with Sys_error _
-    -> "unknown"
+    -> None
 
 
 (* e.g. "name.domain". *)
-let nodename () : string =
+let nodename () : string option =
   try
-    In_channel.with_open_bin "/proc/sys/kernel/hostname" input_line
+    Some (In_channel.with_open_bin "/proc/sys/kernel/hostname" input_line)
   with Sys_error _
-    -> "unknown"
+    -> None
 
 
 (* e.g. "6.15.4-200.fc42.x86_64". *)
-let kernel_release () : string =
+let kernel_release () : string option =
   try
-    In_channel.with_open_bin "/proc/sys/kernel/osrelease" input_line
+    Some (In_channel.with_open_bin "/proc/sys/kernel/osrelease" input_line)
   with Sys_error _
-    -> "unknown"
+    -> None
 
 
 (* e.g. "#1 SMP PREEMPT_DYNAMIC Fri Jun 27 15:32:46 UTC 2025". *)
-let kernel_version () : string =
+let kernel_version () : string option =
   try
-    In_channel.with_open_bin "/proc/sys/kernel/version" input_line
+    Some (In_channel.with_open_bin "/proc/sys/kernel/version" input_line)
   with Sys_error _
-    -> "unknown"
+    -> None
 
 
 (* e.g. "x86_64". *)
-let machine () : string =
+let machine () : string option =
   try
-    In_channel.with_open_bin "/proc/sys/kernel/arch" input_line
+    Some (In_channel.with_open_bin "/proc/sys/kernel/arch" input_line)
   with Sys_error _
-    -> "unknown"
+    -> None
 
 
-let processor () : string =
-  "unknown"
+let processor () : string option =
+  None
 
 
-let hardware_platform () : string =
-  "unknown"
+let hardware_platform () : string option =
+  None
 
 
-let operating_system () : string =
-  "GNU/Linux"
+let operating_system () : string option =
+  Some "GNU/Linux"
 
 
 let do_uname (options : options) : int =
@@ -74,17 +74,18 @@ let do_uname (options : options) : int =
              ( options.operating_system, operating_system ) ] in
   let ss = if options.all
            then List.fold_right (fun e a -> let (_, f) = e in
-                                            let s = f () in
-                                            if s != "unknown"
-                                            then s :: a
+                                            let o = f () in
+                                            if Option.is_some o
+                                            then Option.get o :: a
                                             else a)
                                 fs
                                 []
            else List.fold_right (fun e a -> let (b, f) = e in
                                             if b
-                                            then let s = f () in
-                                                  s :: a
-                                            else  a)
+                                            then let o = f () in
+                                                 let default = "unknown" in
+                                                 Option.value o ~default :: a
+                                            else a)
                                 fs
                                 [] in
   print_endline (String.concat " " ss) ;
