@@ -1,6 +1,6 @@
 ALL=\
-	cat cmp date dmesg echo env expr free id ncat printenv pwd tee tty \
-	uname uptime
+	cat cmp date dmesg echo env expr free id ncat pagesize printenv pwd \
+	tee tty uname uptime
 
 
 all: ${ALL}
@@ -48,6 +48,13 @@ id: id.ml
 
 ncat: ncat.ml
 	ocamlopt -I +unix unix.cmxa ncat.ml -o ncat
+
+
+pagesize: pagesize.ml
+	ocamlfind ocamlopt \
+		-linkpkg \
+		-package ctypes,ctypes-foreign \
+		pagesize.ml -o pagesize
 
 
 printenv: printenv.ml
