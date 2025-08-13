@@ -12,6 +12,7 @@ expr
 free
 id
 ncat
+nproc
 pagesize
 printenv
 pwd
