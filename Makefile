@@ -1,6 +1,6 @@
 ALL=\
-	cat cmp date dmesg echo env expr free id ncat nproc pagesize printenv \
-	pwd tee tty uname uptime
+	cat cmp date dmesg echo env expr factor free id ncat nproc pagesize \
+	printenv pwd tee tty uname uptime
 
 
 all: ${ALL}
@@ -36,6 +36,10 @@ env: env.ml
 
 expr: expr.ml
 	ocamlopt -I +str str.cmxa expr.ml -o expr
+
+
+factor: factor.ml
+	ocamlopt factor.ml -o factor
 
 
 free: free.ml

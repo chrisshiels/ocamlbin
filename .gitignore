@@ -9,6 +9,7 @@ dmesg
 echo
 env
 expr
+factor
 free
 id
 ncat
