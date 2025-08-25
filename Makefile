@@ -73,7 +73,10 @@ printenv: printenv.ml
 
 
 pwd: pwd.ml
-	ocamlopt pwd.ml -o pwd
+	ocamlfind ocamlopt \
+		-linkpkg \
+		-package str,unix \
+		pwd.ml -o pwd
 
 
 tee: tee.ml
