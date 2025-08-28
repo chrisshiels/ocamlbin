@@ -18,6 +18,7 @@ pagesize
 printenv
 pwd
 tee
+tsort
 tty
 uname
 uptime
