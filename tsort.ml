@@ -84,7 +84,7 @@ let do_tsort_string (filename : string)
   then (
          Printf.eprintf "tsort: %s: input contains an odd number of tokens\n"
                         filename ;
-                        1
+         1
        )
   else let graph = list_make_pairs l in
        let s = kahn_start_nodes graph in
