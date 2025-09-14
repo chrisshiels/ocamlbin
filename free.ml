@@ -181,7 +181,7 @@ let output_default (options : options)
   output_swap options h ;
   if options.total then output_total options h ;
   if options.committed then output_comm options h ;
-  Ok (0)
+  Ok 0
 
 
 let output_line (options : options)
@@ -199,20 +199,20 @@ let output_line (options : options)
   Printf.printf "MemFree %11s "
                 (scale options ((Hashtbl.find h "MemFree"))) ;
   print_newline () ;
-  Ok (0)
+  Ok 0
 
 
 let do_free_output (options : options) : (int, string) result =
   let ( >>= ) r f = Result.bind r f in
-  read_meminfo ()
-  >>= parse_meminfo
-  >>= to_hashtbl
-  >>= (if options.line
-       then output_line
-       else output_default) options
+  Ok () >>= read_meminfo
+        >>= parse_meminfo
+        >>= to_hashtbl
+        >>= (if options.line
+             then output_line
+             else output_default) options
 
 
-let rec do_free_loop (options) : (int, string) result =
+let rec do_free_loop (options : options) : (int, string) result =
   let r = do_free_output options in
   match r
   with Ok i          -> if options.count = 0 && options.seconds > 0 then
@@ -235,7 +235,7 @@ let rec do_free_loop (options) : (int, string) result =
      | Error message -> r
 
 
-let do_free (options) : int =
+let do_free (options : options) : int =
   match do_free_loop options
   with Ok i          -> i
      | Error message -> prerr_string "free: " ;
@@ -325,17 +325,17 @@ let main (argv : string array) : int =
   try
     Arg.parse_argv argv speclist anon usage ;
     do_free {
-      exponent = !exponent;
-      human = !human;
-      si = !si;
-      lohi = !lohi;
-      line = !line;
-      total = !total;
-      committed = !committed;
-      seconds = !seconds;
-      count = !count;
-      wide = !wide
-    }
+              exponent = !exponent;
+              human = !human;
+              si = !si;
+              lohi = !lohi;
+              line = !line;
+              total = !total;
+              committed = !committed;
+              seconds = !seconds;
+              count = !count;
+              wide = !wide
+            }
   with Arg.Bad message  -> prerr_string message ;
                            1
      | Arg.Help message -> print_string message ;

@@ -87,10 +87,10 @@ let do_ncat_connect (options : options)
                         "ncat: Connected to %s\n"
                         (Unix.getpeername fd |> string_of_sockaddr) ;
     client_connection_loop fd
-  with Unix.Unix_error(Unix.ECONNREFUSED, _, _)
-    -> fprintf_return 1
-                      stderr
-                      "ncat: Connection refused\n"
+  with Unix.Unix_error (Unix.ECONNREFUSED, _, _)
+       -> fprintf_return 1
+                         stderr
+                         "ncat: Connection refused\n"
 
 
 let server_connection_exec_loop (fd : Unix.file_descr)
@@ -262,6 +262,13 @@ let parse_ncat_listen (options : options)
                       (Option.get port_opt)
 
 
+let do_ncat (options : options)
+            (anonlist : string list) : int =
+  if not options.listen
+  then parse_ncat_connect options anonlist
+  else parse_ncat_listen options anonlist
+
+
 let main (argv : string array) : int =
   let usage = "Usage: Usage: ncat [OPTION]... [HOSTNAME] [PORT]\n" in
   let exec = ref "" in
@@ -288,15 +295,13 @@ let main (argv : string array) : int =
     ] in
   try
     Arg.parse_argv argv speclist anon usage ;
-    let options = {
-      exec = !exec;
-      listen = !listen;
-      keep_open = !keep_open;
-      verbose = !verbose;
-    } in
-    if not !listen
-    then parse_ncat_connect options !anonlist
-    else parse_ncat_listen options !anonlist
+    do_ncat {
+              exec = !exec;
+              listen = !listen;
+              keep_open = !keep_open;
+              verbose = !verbose;
+            }
+            !anonlist
   with Arg.Bad message  -> prerr_string message ;
                            1
      | Arg.Help message -> print_string message ;

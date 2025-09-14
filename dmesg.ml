@@ -246,12 +246,12 @@ let main (argv : string array) : int =
   try
     Arg.parse_argv argv speclist anon usage ;
     do_dmesg {
-      ctime = !ctime;
-      follow = !follow;
-      follow_new = !follow_new;
-      kernel = !kernel;
-      userspace = !userspace
-    }
+               ctime = !ctime;
+               follow = !follow;
+               follow_new = !follow_new;
+               kernel = !kernel;
+               userspace = !userspace
+             }
   with Arg.Bad message   -> prerr_string message ;
                             1
      | Arg.Help message  -> print_string message ;
