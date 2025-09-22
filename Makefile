@@ -1,6 +1,6 @@
 ALL=\
 	cat cmp date dmesg echo env expr factor free id ncat nproc pagesize \
-	printenv pwd tee tsort tty uname uptime
+	printenv pwd tee tsort tty uname uptime yes
 
 
 all: ${ALL}
@@ -97,3 +97,7 @@ uname: uname.ml
 
 uptime: uptime.ml
 	ocamlopt -I +unix unix.cmxa uptime.ml -o uptime
+
+
+yes: yes.ml
+	ocamlopt yes.ml -o yes
